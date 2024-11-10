@@ -1,0 +1,90 @@
+/*-----------------  GOOGLE FONTS  -----------------*/
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif&display=swap');
+
+/*-----------------  VARIABLES  -----------------*/
+:root {
+    /* Colors */ 
+    --white_color : rgb(255, 255, 255);
+    --gold_color: rgb(255, 215, 0);
+    --green_color: rgb(45, 252, 26);
+    --body_background: linear-gradient(to right, #141e30, #243b55);
+    --spin_background: linear-gradient(to right, #fc4a1a, #f7b733);
+}
+/*-----------------  Base  -----------------*/
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'PT Serif', serif;
+}
+body {
+  height: 100vh;
+  background: var(--body_background);
+}
+/*-----------------  Styling Start  -----------------*/
+h1 {
+  position: absolute;
+  font-size: 3rem;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--gold_color);
+}
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 34.37rem;
+    margin-top: 3rem;
+    max-height: 90vh;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    padding: 3rem; 
+    border-radius: 1rem;
+}
+.wheel_box {
+  position: relative;
+  width: 110%;
+  height: 110%;
+}
+#spinWheel {
+  max-height: inherit;
+  width: inherit;
+  transform: rotate(270deg);
+}
+#spin_btn {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  height: 35%;
+  width: 35%;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 0;
+  background: var(--spin_background);
+  color: var(--white_color);
+  text-transform: lowercase;
+  font-size: 1.8rem;
+  letter-spacing: 0.1rem;
+  font-weight: 400;
+}
+.fa-solid {
+  position: absolute;
+  top: -6%;
+  left: 44.7%;
+  font-size: 2rem;
+  color: var(--green_color);
+  transform: rotate(-225deg);
+}
+#text {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--gold_color);
+  font-weight: 500;
+}

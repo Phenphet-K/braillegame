@@ -1,0 +1,324 @@
+const b = document.querySelectorAll(".braille_btn");
+const v = document.querySelector(".valid");
+const newl = document.querySelector(".new");
+const retry = document.querySelector(".retry");
+const reveal = document.querySelector(".reveal");
+const target = document.querySelector("#target");
+
+let score = 0;
+let countdown = 20; // เพิ่มตัวแปรนับถอยหลัง
+let timer; // เพิ่มตัวแปร timer
+
+const yes = document.querySelector(".yes");
+const no = document.querySelector(".no");
+const ans = document.querySelector(".ans");
+const bg = document.querySelector(".modal_bg");
+function openYes() {
+  yes.style.visibility = "visible";
+  bg.style.visibility = "visible";
+}
+
+function openNo() {
+  no.style.visibility = "visible";
+  bg.style.visibility = "visible";
+}
+
+function openAnswer() {
+  ans.style.visibility = "visible";
+  bg.style.visibility = "visible";
+}
+
+function close() {
+  yes.style.visibility = "hidden";
+  no.style.visibility = "hidden";
+  bg.style.visibility = "hidden";
+  ans.style.visibility = "hidden";
+  for (const elt of b) {
+    elt.classList.toggle("dot", false);
+  }
+}
+
+const l2b = {
+  "0": "⠴",
+  "1": "⠂",
+  "2": "⠆",
+  "3": "⠒",
+  "4": "⠲",
+  "5": "⠢",
+  "6": "⠖",
+  "7": "⠶",
+  "8": "⠦",
+  "9": "⠔",
+  A: "⠁",
+  B: "⠃",
+  C: "⠉",
+  D: "⠙",
+  E: "⠑",
+  F: "⠋",
+  G: "⠛",
+  H: "⠓",
+  I: "⠊",
+  J: "⠚",
+  K: "⠅",
+  L: "⠇",
+  M: "⠍",
+  N: "⠝",
+  O: "⠕",
+  P: "⠏",
+  Q: "⠟",
+  R: "⠗",
+  S: "⠎",
+  T: "⠞",
+  U: "⠥",
+  V: "⠧",
+  W: "⠺",
+  X: "⠭",
+  Z: "⠵",
+  "]": "⠻",
+  "#": "⠼",
+  Y: "⠽",
+  ")": "⠾",
+  "=": "⠿"
+};
+
+const b2n = {
+  "⠴": "245",
+  "⠂": "2",
+  "⠆": "23",
+  "⠒": "25",
+  "⠲": "256",
+  "⠢": "26",
+  "⠖": "235",
+  "⠶": "2356",
+  "⠦": "236",
+  "⠔": "35",
+  "⠁": "1",
+  "⠃": "12",
+  "⠉": "14",
+  "⠙": "145",
+  "⠑": "15",
+  "⠋": "124",
+  "⠛": "1245",
+  "⠓": "125",
+  "⠊": "24",
+  "⠚": "245",
+  "⠅": "13",
+  "⠇": "123",
+  "⠍": "134",
+  "⠝": "1345",
+  "⠕": "135",
+  "⠏": "1234",
+  "⠟": "12345",
+  "⠗": "1235",
+  "⠎": "234",
+  "⠞": "2345",
+  "⠥": "136",
+  "⠧": "1236",
+  "⠺": "2456",
+  "⠭": "1346",
+  "⠽": "13456",
+  "⠵": "1356"
+};
+/*------------------ function countdown ----------------------- */
+
+document.addEventListener('DOMContentLoaded', function () {
+  let timer;
+  let countdown = 30;
+
+  function startCountdown() {
+    clearInterval(timer); // ให้ตั้งค่าเวลาเป็น 30 ทุกครั้งที่เริ่มนับถอยหลังใหม่
+    timer = setInterval(function () {
+      countdown--;
+      if (countdown < 0) {
+        clearInterval(timer);
+        endGame();
+      }
+      document.querySelector('.time-display').innerText = countdown;
+    }, 1000);
+  }
+
+  function resetGame() {
+    resetTimer();
+    resetScore();
+  }
+
+  function resetScore() {
+    // รีเซ็ตคะแนนของคุณ (ถ้ามี)
+  }
+
+  function startTimer() {
+    startCountdown();
+  }
+
+  function stopTimer() {
+    clearInterval(timer);
+  }
+
+  function endGame() {
+    stopTimer();
+    setTimeout(function () {
+      resetGame();
+      startTimer();
+      window.location.href = "/level/lev1/letter.html";
+    }, 5000);
+  }
+
+  function resetTimer() {
+    countdown = 30;
+    document.querySelector('.time-display').innerText = countdown;
+  }
+
+  document.querySelector('.ui_btn.valid').addEventListener('click', function () {
+    resetGame();
+    startTimer();
+  });
+
+  // เริ่มต้นนับถอยหลังเมื่อหน้า HTML โหลดเสร็จ
+  startTimer();
+});
+
+
+/*------------------End of function countdown ------------------ */
+
+
+/*---------- function Play sound -----------*/
+function playCorrectSound() {
+  const correctSound = document.getElementById('correctSound');
+  correctSound.play();
+}
+
+function playIncorrectSound() {
+  const incorrectSound = document.getElementById('incorrectSound');
+  incorrectSound.play();
+}
+
+/*--------- End of function Play sound ---------*/
+
+function inverse(obj) {
+  var retobj = {};
+  for (var key in obj) {
+    retobj[obj[key]] = key;
+  }
+  return retobj;
+}
+
+const n2b = inverse(b2n);
+const b2l = inverse(l2b);
+let wrongAnswers = [];
+let currentAlphabetIndex = 0;
+
+const words = ["cat", "dog", "bird", "fish", "apple", "banana", "car", "house", "book", "computer"];
+let currentWordIndex = 0;
+
+function newLetter() {
+  target.innerText = words[currentWordIndex];
+  currentWordIndex = (currentWordIndex + 1) % words.length;
+  console.log(target.innerText);
+  close();
+}
+
+// เพิ่มฟังก์ชัน checkAnswer เพื่อตรวจสอบคำตอบ
+function checkAnswer() {
+  let enteredWord = "";
+  for (const i of b) {
+    if (i.classList[1] === "dot") {
+      enteredWord += i.braille.toString();
+    }
+  }
+}
+
+newl.addEventListener("click", () => {
+  newLetter();
+});
+
+// ...
+
+v.addEventListener("click", () => {
+  let enteredWord = "";
+  for (const i of b) {
+    if (i.classList[1] === "dot") {
+      enteredWord += i.braille.toString();
+    }
+  }
+  console.log("->", enteredWord);
+  if (enteredWord === target.innerText) {
+    console.log("Yes");
+    playCorrectSound();
+    updateScore(1);
+    openYes();
+    setTimeout(() => {
+      newLetter();
+    }, 1000);
+  } else {
+    console.log("No");
+    playIncorrectSound();
+    updateScore(0);
+    openNo();
+    newLetter();
+  }
+});
+
+newLetter();
+
+
+function customConfirm(message, callback) {
+  const confirmation = document.createElement("div");
+  confirmation.className = "confirmation";
+  confirmation.innerHTML = `
+    <div class="message">${message}</div>
+    <button class="confirm">ตกลง</button>
+    <button class="cancel">ยกเลิก</button>
+  `;
+
+  document.body.appendChild(confirmation);
+
+  const confirmButton = confirmation.querySelector(".confirm");
+  const cancelButton = confirmation.querySelector(".cancel");
+
+  confirmButton.addEventListener("click", () => {
+    document.body.removeChild(confirmation);
+    callback(true);
+  });
+
+  cancelButton.addEventListener("click", () => {
+    document.body.removeChild(confirmation);
+    callback(false);
+  });
+}
+
+function updateScore(nb = 0) {
+  if (nb) {
+    score += nb;
+  }
+
+  document.querySelector(".score").innerText = score;
+  document.querySelector(".scoreno").innerText = score;
+  document.querySelector(".scoreui").innerText = score;
+
+  if (score >= 26) {
+    // แสดงกล่องแจ้งเตือน
+    const userConfirmed = window.confirm("ยินดีด้วยคุณผ่านด่านแล้ว คุณต้องการไปที่ด่านถัดไปหรือไม่?");
+
+    if (userConfirmed) {
+      // ทำการเปลี่ยนหน้าหรือทำการนำผู้เล่นไปยังหน้าถัดไป
+      window.location.href = "/level/lev1/number/number.html"; // เปลี่ยน "หน้าถัดไป.html" เป็น URL หน้าถัดไปที่คุณต้องการ
+    }
+  }
+}
+
+document.querySelector(".anew").addEventListener("click", () => {
+  newLetter();
+  close();
+});
+
+updateScore();
+console.log(12);
+
+async function ah() {
+  // 20 - 350
+  const response = await fetch("https://api.quotable.io/random?maxLength=20");
+  const ahh = await response.json();
+  console.log(ahh.content);
+}
+
+ah();

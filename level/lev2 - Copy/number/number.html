@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Number</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <audio id="correctSound" src="/spin/sound/notify/correct.mp3"></audio>
+    <audio id="incorrectSound" src="/spin/sound/notify/incorrect.mp3"></audio>
+    <nav>
+      <!--<h1>Fun with braille</h1>-->
+      <ul>
+        <h3>เวลา: <span class="time-display"></span> วินาที</h3>
+        <!--<li><a href="index.html">Home</a></li>
+        <li><a href="number.html">Play</a></li>
+        <li><a href="/braillegame/th/index.html">Thai</a></li>
+        <li><a href="word.html">Word</a></li>-->
+      </ul>
+    </nav><br>
+    <h5>&nbsp;&nbsp;<span class="scoreui"></span></h5>
+    <div class="game">
+      <!--<h1 id="target"></h1>-->
+      <font size ="36px" id="target" tabindex="0"></font>
+      <h2>→</h2>
+      <div class="braillesetter">
+        <button class="braille_btn" title = "dot 1"></button>
+        <button class="braille_btn" title = "dot 2"></button>
+        <button class="braille_btn" title = "dot 3"></button>
+        <button class="braille_btn" title = "dot 4"></button>
+        <button class="braille_btn" title = "dot 5"></button>
+        <button class="braille_btn" title = "dot 6"></button>
+      </div>
+    </div>
+    <button class="ui_btn valid">Submit</button>
+
+    <div class="modal_bg"></div>
+    <div class="modal yes">
+      <!--<h2>Correct</h2>-->
+      <!--<h2>+ 1 </h2>-->
+      <h5><span class="score"></span></h5>
+      <button class="ui_btn new">== 🥰😎😘😍 ==</button>
+    </div>
+
+    <div class="modal no">
+      <h2>Incorrect!</h2>
+      <h3>Score: <span class="scoreno"></span></h3>
+      <button class="ui_btn retry">Retry (-1)</button>
+      <button class="ui_btn reveal">Answer (-2)</button>
+    </div>
+
+    <div class="modal ans">
+      <h1>Answer:</h1>
+      <h1 class="answer"></h1>
+      <button class="ui_btn anew">Next</button>
+    </div>
+  
+  <script src="number.js"></script>
+  <footer><center><br><br>
+  <p>Braille Tutor V.1.1 Made with ♥ <br> by
+  <a href="https://krootoi.com">krootoi.com</a></p></center>
+</footer><br><br>
+</body>
+</html>
